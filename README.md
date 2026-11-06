@@ -134,3 +134,186 @@ Las clases están separadas en `apps/models/`:
 `apps/models/__init__.py` las registra mediante importaciones. El texto estándar y los controles se muestran con letra de **16 px**.
 
 > ✅ **No necesitas borrar ni recrear la base de datos:** la migración inicial conserva la misma estructura.
+
+## 🎨 Diseño y paleta de colores
+
+La interfaz usa una paleta veterinaria: **verde azulado** (salud y confianza), **coral** (acciones y alertas) y fondos suaves que descansan la vista.
+
+| Uso | Color | Hex |
+|---|---|---|
+| Primario | ![](https://img.shields.io/badge/-%20%20%20%20%20-0F8B8D) | `#0F8B8D` |
+| Primario oscuro (navbar, hover) | ![](https://img.shields.io/badge/-%20%20%20%20%20-0A5F61) | `#0A5F61` |
+| Primario suave (resaltados) | ![](https://img.shields.io/badge/-%20%20%20%20%20-E3F3F3) | `#E3F3F3` |
+| Acento (acciones destacadas) | ![](https://img.shields.io/badge/-%20%20%20%20%20-F26B5B) | `#F26B5B` |
+| Fondo | ![](https://img.shields.io/badge/-%20%20%20%20%20-F4F8F8) | `#F4F8F8` |
+| Texto | ![](https://img.shields.io/badge/-%20%20%20%20%20-1F2D3D) | `#1F2D3D` |
+| Éxito | ![](https://img.shields.io/badge/-%20%20%20%20%20-2E9E6B) | `#2E9E6B` |
+| Aviso | ![](https://img.shields.io/badge/-%20%20%20%20%20-F2A93B) | `#F2A93B` |
+| Error | ![](https://img.shields.io/badge/-%20%20%20%20%20-D64545) | `#D64545` |
+
+### Activar los estilos
+
+1. Crear el archivo `static/control/css/estilo.css` con el CSS de abajo.
+2. En `templates/control/base.html`, dentro de `<head>`:
+
+   ```html
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'control/css/estilo.css' %}">
+   ```
+
+3. Recargar con **Ctrl + F5**. En producción, ejecutar `python manage.py collectstatic --noinput`.
+
+### Clases disponibles
+
+| Clase | Función |
+|---|---|
+| `.navbar`, `.marca` | Barra superior con degradado |
+| `.contenedor`, `.tarjeta` | Contenedor central y tarjetas con sombra |
+| `.btn`, `.btn-acento`, `.btn-peligro`, `.btn-claro` | Botones |
+| `.badge-pendiente`, `-confirmada`, `-atendida`, `-cancelada` | Estados de las citas |
+| `.mensaje.success / .warning / .error` | Mensajes de Django |
+| `.no-imprimir` | Oculta elementos al imprimir o guardar como PDF |
+
+Ejemplo de estado de una cita:
+
+```html
+<span class="badge badge-{{ cita.estado|lower }}">{{ cita.estado }}</span>
+```
+
+<details>
+<summary><b>Ver CSS completo (<code>estilo.css</code>)</b></summary>
+
+```css
+:root {
+  --primario: #0F8B8D;
+  --primario-oscuro: #0A5F61;
+  --primario-suave: #E3F3F3;
+  --acento: #F26B5B;
+  --fondo: #F4F8F8;
+  --tarjeta: #FFFFFF;
+  --texto: #1F2D3D;
+  --borde: #D9E4E6;
+  --exito: #2E9E6B;
+  --aviso: #F2A93B;
+  --error: #D64545;
+  --radio: 12px;
+  --sombra: 0 2px 10px rgba(15, 60, 70, .08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+a { color: var(--primario); text-decoration: none; }
+a:hover { color: var(--primario-oscuro); text-decoration: underline; }
+
+h1, h2, h3 { color: var(--primario-oscuro); margin: 0 0 .6em; line-height: 1.25; }
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.4rem; }
+
+/* Navegación */
+.navbar {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: .9rem 1.5rem;
+  background: linear-gradient(90deg, var(--primario-oscuro), var(--primario));
+  box-shadow: var(--sombra);
+}
+.navbar .marca { color: #fff; font-weight: 700; font-size: 1.2rem; }
+.navbar .marca::before { content: "🐾 "; }
+.navbar a { color: #E9F7F7; padding: .4rem .7rem; border-radius: 8px; }
+.navbar a:hover, .navbar a.activo {
+  background: rgba(255, 255, 255, .18); color: #fff; text-decoration: none;
+}
+
+/* Contenedor y tarjetas */
+.contenedor { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Botones */
+.btn {
+  display: inline-block; cursor: pointer;
+  padding: .55rem 1.1rem; font-size: 1rem; font-weight: 600;
+  color: #fff; background: var(--primario);
+  border: 0; border-radius: 8px;
+  transition: background .15s, transform .05s;
+}
+.btn:hover { background: var(--primario-oscuro); color: #fff; text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn-acento { background: var(--acento); }
+.btn-acento:hover { background: #D9503F; }
+.btn-peligro { background: var(--error); }
+.btn-peligro:hover { background: #B73535; }
+.btn-claro { background: var(--primario-suave); color: var(--primario-oscuro); }
+.btn-claro:hover { background: #CDE9E9; color: var(--primario-oscuro); }
+
+/* Formularios */
+label { display: block; font-weight: 600; margin: .9rem 0 .3rem; }
+input, select, textarea {
+  width: 100%; font: inherit; color: var(--texto);
+  padding: .55rem .75rem;
+  background: #fff; border: 1px solid var(--borde); border-radius: 8px;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--primario);
+  box-shadow: 0 0 0 3px rgba(15, 139, 141, .2);
+}
+.errorlist { list-style: none; padding: 0; margin: .3rem 0; color: var(--error); font-size: .9rem; }
+
+/* Tablas */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th { text-align: left; padding: .75rem; color: #fff; background: var(--primario); }
+th:first-child { border-top-left-radius: 10px; }
+th:last-child { border-top-right-radius: 10px; }
+td { padding: .7rem .75rem; border-bottom: 1px solid var(--borde); }
+tbody tr:nth-child(even) { background: #F8FCFC; }
+tbody tr:hover { background: var(--primario-suave); }
+
+/* Estados de citas */
+.badge { display: inline-block; padding: .15rem .65rem; font-size: .85rem; font-weight: 600; border-radius: 999px; }
+.badge-pendiente  { background: #FFF1D6; color: #8A5A00; }
+.badge-confirmada { background: #DCEFFB; color: #11598A; }
+.badge-atendida   { background: #DDF3E8; color: #1D6B47; }
+.badge-cancelada  { background: #FBE0E0; color: #9B2C2C; }
+
+/* Mensajes de Django */
+.mensaje { padding: .8rem 1rem; border-radius: 8px; margin-bottom: 1rem;
+           border-left: 5px solid var(--primario); background: var(--primario-suave); }
+.mensaje.success { border-color: var(--exito); background: #E3F5EC; }
+.mensaje.warning { border-color: var(--aviso); background: #FFF4DE; }
+.mensaje.error   { border-color: var(--error); background: #FCE6E6; }
+
+/* Login */
+.login-caja { max-width: 400px; margin: 6vh auto; }
+.login-caja h1 { text-align: center; }
+
+/* Impresión */
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .navbar, .btn, .no-imprimir { display: none !important; }
+  .tarjeta { box-shadow: none; border: 0; padding: 0; }
+  th { background: #eee !important; color: #000 !important; }
+}
+
+/* Móvil */
+@media (max-width: 640px) {
+  .navbar { flex-wrap: wrap; gap: .5rem; }
+  .contenedor { margin: 1rem auto; }
+}
+```
+
+</details>
