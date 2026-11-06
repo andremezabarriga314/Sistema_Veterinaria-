@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Veterinaria Profesional — Django + MariaDB
 
 Proyecto educativo completo, basado en la estructura de Agenda Simple (`config/`, `apps/`, `templates/control/`, `static/control/`).
@@ -50,3 +51,6 @@ Leer `MANUAL_DEL_PROFESOR.md`.
 ## Organización de modelos y tipografía (actualización)
 
 Las clases están separadas en `apps/models/`: `Propietario.py`, `Mascota.py`, `Veterinario.py`, `Cita.py`, `Diagnostico.py`, `Medicamento.py` y `Receta.py`. `apps/models/__init__.py` las registra mediante importaciones. El texto estándar y los controles se muestran con letra de 16 px. **No se necesita borrar ni volver a crear la base de datos:** la migración inicial conserva la misma estructura.
+=======
+# Sistema_Veterinaria-
+>>>>>>> d325a974f1e0d684ccb9d7df28cd7c0a2a362343
